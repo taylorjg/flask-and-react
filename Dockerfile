@@ -21,5 +21,4 @@ RUN venv/bin/pip install -r requirements.txt
 
 ENV FLASK_APP server.py
 
-EXPOSE 5000
 ENTRYPOINT ["./boot.sh"]
