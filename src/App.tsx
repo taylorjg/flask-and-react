@@ -1,9 +1,10 @@
+import WeatherHistory from "./WeatherHistory"
 import "./App.css"
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      TODO
+    <div className="app">
+      <WeatherHistory />
     </div>
   )
 }
