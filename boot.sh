@@ -1,4 +1,6 @@
 #!/bin/sh
 source venv/bin/activate
 
-exec gunicorn -b :5000 server:app
+PORT=${PORT:-5000}
+
+exec gunicorn -b :$PORT server:app
