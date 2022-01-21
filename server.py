@@ -16,15 +16,6 @@ def index():
     return app.send_static_file("index.html")
 
 
-@app.route("/reverse", methods=["POST"])
-def form_example():
-    input = request.form.get("input")
-    print(f"input: {input}")
-    output = input[::-1]
-    print(f"output: {output}")
-    return output
-
-
 @app.route("/weatherdata", methods=["GET"])
 def get_weatherdata():
     now = datetime.now()
