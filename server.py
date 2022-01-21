@@ -8,7 +8,7 @@ LON = -2.2718197
 
 OPEN_WEATHER_API_KEY = os.environ.get("OPEN_WEATHER_API_KEY")
 
-app = Flask(__name__, static_url_path="")
+app = Flask(__name__, static_folder="build", static_url_path="")
 
 
 @app.route("/", methods=["GET"])

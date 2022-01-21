@@ -14,7 +14,7 @@ FROM python:3.10-alpine
 WORKDIR /app
 
 COPY requirements.txt server.py boot.sh ./
-COPY --from=build /app/build static
+COPY --from=build /app/build build
 
 RUN python -m venv venv
 RUN venv/bin/pip install -r requirements.txt
