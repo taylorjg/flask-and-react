@@ -5,7 +5,6 @@ import { Threshold } from "@visx/threshold"
 import { scaleTime, scaleLinear } from "@visx/scale"
 import { AxisLeft, AxisBottom } from "@visx/axis"
 import { GridRows, GridColumns } from "@visx/grid"
-import "./WeatherHistoryChart.css"
 
 export type HourlyData = {
   dt: number

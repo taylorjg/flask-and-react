@@ -1,7 +1,6 @@
 import axios from "axios"
 import { useQuery } from "react-query"
 import WeatherHistoryChart from "./WeatherHistoryChart"
-import "./WeatherHistory.css"
 
 const WeatherHistory = () => {
 
@@ -21,8 +20,10 @@ const WeatherHistory = () => {
     return <div>Fetching...</div>
   }
 
+  const weatherData = queryResult.data?.hourly ?? []
+
   return (
-    <WeatherHistoryChart weatherData={queryResult.data.hourly} />
+    <WeatherHistoryChart weatherData={weatherData} />
   )
 }
 

@@ -1,7 +1,8 @@
 import { QueryClient, QueryClientProvider } from "react-query"
+import { Container } from "@mui/material"
 import WeatherHistory from "./WeatherHistory"
 import Version from "./Version"
-import "./App.css"
+import styled from "@emotion/styled"
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -14,13 +15,21 @@ const queryClient = new QueryClient({
   }
 })
 
+const Content = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`
+
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="app">
-        <WeatherHistory />
-        <Version />
-      </div>
+      <Container>
+        <Content>
+          <WeatherHistory />
+          <Version />
+        </Content>
+      </Container>
     </QueryClientProvider>
   )
 }
