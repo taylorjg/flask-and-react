@@ -1,10 +1,10 @@
 import axios from "axios"
 import { useQuery } from "react-query"
-import WeatherHistoryChart from "./WeatherHistoryChart"
+import WeatherHistoryChart, { HourlyData } from "./WeatherHistoryChart"
 
 const WeatherHistory = () => {
 
-  const queryResult = useQuery<any, Error>(
+  const queryResult = useQuery<HourlyData[], Error>(
     'weatherdata',
     () => axios.get('/weatherdata').then(({ data }) => data),
     {
