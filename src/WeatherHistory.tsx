@@ -20,7 +20,7 @@ const WeatherHistory = () => {
     return <div>Fetching...</div>
   }
 
-  const weatherData = queryResult.data?.hourly ?? []
+  const weatherData = queryResult.data ?? []
 
   return (
     <WeatherHistoryChart weatherData={weatherData} />

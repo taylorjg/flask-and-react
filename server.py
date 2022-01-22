@@ -1,7 +1,8 @@
-from flask import Flask, request, Response
+from flask import Flask, jsonify
 from datetime import datetime, timedelta
 import urllib.request
 import os
+import json
 
 LAT = 53.4371319
 LON = -2.2718197
@@ -16,12 +17,20 @@ def index():
     return app.send_static_file("index.html")
 
 
-@app.route("/weatherdata", methods=["GET"])
-def get_weatherdata():
+def get_historical_data(days_ago):
     now = datetime.now()
-    yesterday = now - timedelta(days=1)
-    dt = int(yesterday.timestamp())
+    day_of_interest = now - timedelta(days=days_ago)
+    dt = int(day_of_interest.timestamp())
     url = f"http://api.openweathermap.org/data/2.5/onecall/timemachine?lat={LAT}&lon={LON}&dt={dt}&units=metric&appid={OPEN_WEATHER_API_KEY}"
     response = urllib.request.urlopen(url)
     data = response.read()
-    return Response(data, content_type="application/json; charset=utf-8")
+    dict = json.loads(data)
+    return dict["hourly"]
+
+
+@app.route("/weatherdata", methods=["GET"])
+def get_weatherdata():
+    data = []
+    for days_ago in range(5, 0, -1):
+        data = data + get_historical_data(days_ago)
+    return jsonify(data)
