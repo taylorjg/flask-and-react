@@ -3,13 +3,14 @@ import { curveBasis } from "@visx/curve"
 import { LinePath } from "@visx/shape"
 import { Threshold } from "@visx/threshold"
 import { scaleTime, scaleLinear } from "@visx/scale"
-import { AxisLeft, AxisBottom } from "@visx/axis"
+import { AxisLeft, AxisRight, AxisBottom } from "@visx/axis"
 import { GridRows, GridColumns } from "@visx/grid"
 
 export type HourlyData = {
   dt: number
   temp: number
   feels_like: number
+  wind_speed: number
 }
 
 const background = "#f3f3f3"
@@ -17,6 +18,7 @@ const background = "#f3f3f3"
 const date = (d: HourlyData) => d.dt * 1000
 const temperature = (d: HourlyData) => d.temp
 const feelsLike = (d: HourlyData) => d.feels_like
+const windSpeed = (d: HourlyData) => d.wind_speed
 
 const defaultWidth = 600
 const defaultHeight = 400
@@ -51,11 +53,20 @@ const WeatherHistoryChart: React.FC<WeatherHistoryChartProps> = ({
     nice: true
   })
 
+  const windSpeedScale = scaleLinear<number>({
+    domain: [
+      Math.min(...weatherData.map(windSpeed)),
+      Math.max(...weatherData.map(windSpeed))
+    ],
+    nice: true
+  })
+
   const xMax = width - margin.left - margin.right
   const yMax = height - margin.top - margin.bottom
 
   timeScale.range([0, xMax])
   temperatureScale.range([yMax, 0])
+  windSpeedScale.range([yMax, 0])
 
   return (
     <div>
@@ -66,9 +77,9 @@ const WeatherHistoryChart: React.FC<WeatherHistoryChartProps> = ({
           <GridColumns scale={timeScale} width={xMax} height={yMax} stroke="#e0e0e0" />
           <AxisBottom top={yMax} scale={timeScale} numTicks={width > 520 ? 10 : 5} />
           <AxisLeft scale={temperatureScale} />
-          <text x="-70" y="15" transform="rotate(-90)" fontSize={10}>
-            Temperature (°C)
-          </text>
+          <AxisRight scale={windSpeedScale} left={xMax} />
+          <text x="-70" y="15" transform="rotate(-90)" fontSize={10}>Temperature (°C)</text>
+          <text x="-70" y={xMax - 15} transform="rotate(-90)" fontSize={10}>Wind Speed (m/s)</text>
           <Threshold<HourlyData>
             id={`${Math.random()}`}
             data={weatherData}
@@ -104,6 +115,14 @@ const WeatherHistoryChart: React.FC<WeatherHistoryChartProps> = ({
             strokeWidth={1.5}
             strokeOpacity={0.8}
             strokeDasharray="1,2"
+          />
+          <LinePath
+            data={weatherData}
+            curve={curveBasis}
+            x={d => timeScale(date(d)) ?? 0}
+            y={d => windSpeedScale(windSpeed(d)) ?? 0}
+            stroke="purple"
+            strokeWidth={1.5}
           />
         </Group>
       </svg>
