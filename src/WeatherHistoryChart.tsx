@@ -25,7 +25,8 @@ const defaultHeight = 400
 const defaultMargin = { top: 40, right: 30, bottom: 50, left: 40 }
 
 export type WeatherHistoryChartProps = {
-  weatherData: HourlyData[],
+  weatherData: HourlyData[]
+  showWindSpeed: boolean
   width?: number
   height?: number
   margin?: { top: number; right: number; bottom: number; left: number }
@@ -33,6 +34,7 @@ export type WeatherHistoryChartProps = {
 
 const WeatherHistoryChart: React.FC<WeatherHistoryChartProps> = ({
   weatherData,
+  showWindSpeed,
   width = defaultWidth,
   height = defaultHeight,
   margin = defaultMargin
@@ -116,14 +118,18 @@ const WeatherHistoryChart: React.FC<WeatherHistoryChartProps> = ({
             strokeOpacity={0.8}
             strokeDasharray="1,2"
           />
-          <LinePath
-            data={weatherData}
-            curve={curveBasis}
-            x={d => timeScale(date(d)) ?? 0}
-            y={d => windSpeedScale(windSpeed(d)) ?? 0}
-            stroke="purple"
-            strokeWidth={1.5}
-          />
+          {
+            showWindSpeed && (
+              <LinePath
+                data={weatherData}
+                curve={curveBasis}
+                x={d => timeScale(date(d)) ?? 0}
+                y={d => windSpeedScale(windSpeed(d)) ?? 0}
+                stroke="purple"
+                strokeWidth={1.5}
+              />
+            )
+          }
         </Group>
       </svg>
     </div>

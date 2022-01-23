@@ -1,12 +1,13 @@
 import { useState } from "react"
 import axios from "axios"
 import { useQuery } from "react-query"
-import { Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material"
+import { Box, Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material"
 import WeatherHistoryChart, { HourlyData } from "./WeatherHistoryChart"
 
 const WeatherHistory = () => {
 
   const [numDays, setNumDays] = useState(1)
+  const [showWindSpeed, setShowWindSpeed] = useState(true)
 
   const queryResult = useQuery<HourlyData[], Error>(
     ['weatherdata', numDays],
@@ -25,8 +26,11 @@ const WeatherHistory = () => {
 
   const handleChangeNumDays = (event: SelectChangeEvent<number>) => {
     const value = event.target.value as number
-    console.log('[handleChangeNumDays]', 'value:', value)
     setNumDays(value)
+  }
+
+  const handleChangeWindSpeed = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setShowWindSpeed(event.target.checked)
   }
 
   return (
@@ -50,7 +54,12 @@ const WeatherHistory = () => {
           </Select>
         </FormControl>
       </Box>
-      <WeatherHistoryChart weatherData={weatherData} />
+      <WeatherHistoryChart weatherData={weatherData} showWindSpeed={showWindSpeed} />
+      <Box sx={{ display: 'flex', justifyContent: 'center', my: '.5rem' }}>
+        <FormControlLabel control={
+          <Checkbox checked={showWindSpeed} onChange={handleChangeWindSpeed} size="small" />
+        } label="Show wind speed" />
+      </Box>
     </Box>
   )
 }
