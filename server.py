@@ -1,10 +1,8 @@
 from flask import Flask, jsonify, request
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
-# import urllib.request
 import requests
 import os
-import json
 
 load_dotenv()
 
@@ -38,7 +36,7 @@ def get_historical_data(days_ago):
     return dict["hourly"]
 
 
-@app.route("/weatherdata", methods=["GET"])
+@app.route("/api/weatherdata", methods=["GET"])
 def get_weatherdata():
     num_days = int(request.args.get("numDays", default="1"))
     data = []
