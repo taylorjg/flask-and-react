@@ -1,7 +1,7 @@
 {
   "name": "flask-and-react",
   "description": "Flask backend and React frontend",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.7.1",
