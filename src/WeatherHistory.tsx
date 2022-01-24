@@ -3,6 +3,27 @@ import axios from "axios"
 import { useQuery } from "react-query"
 import { Box, Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material"
 import WeatherHistoryChart, { HourlyData } from "./WeatherHistoryChart"
+import styled from "@emotion/styled"
+
+const StyledChartPlaceholder = styled.div`
+  width: 800px;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f3f3f3;
+`
+
+const StyledQueryLoadingMessage = styled.div`
+  font-size: xx-large;
+  font-style: italic;
+`
+
+const StyledQueryErrorMessage = styled.div`
+  font-size: xx-large;
+  font-style: italic;
+  color: red;
+`
 
 const WeatherHistory = () => {
 
@@ -18,12 +39,6 @@ const WeatherHistory = () => {
       }
     })
 
-  if (queryResult.isFetching) {
-    return <div>Fetching...</div>
-  }
-
-  const weatherData = queryResult.data ?? []
-
   const handleChangeNumDays = (event: SelectChangeEvent<number>) => {
     const value = event.target.value as number
     setNumDays(value)
@@ -31,6 +46,26 @@ const WeatherHistory = () => {
 
   const handleChangeWindSpeed = (event: React.ChangeEvent<HTMLInputElement>) => {
     setShowWindSpeed(event.target.checked)
+  }
+
+  const renderChart = (): JSX.Element => {
+    if (queryResult.isLoading) {
+      return (
+        <StyledQueryLoadingMessage>Loading...</StyledQueryLoadingMessage>
+      )
+    }
+
+    if (queryResult.isError) {
+      return (
+        <StyledQueryErrorMessage>{queryResult.error.message}</StyledQueryErrorMessage>
+      )
+    }
+
+    const weatherData = queryResult.data ?? []
+
+    return (
+      <WeatherHistoryChart weatherData={weatherData} showWindSpeed={showWindSpeed} />
+    )
   }
 
   return (
@@ -54,12 +89,17 @@ const WeatherHistory = () => {
           </Select>
         </FormControl>
       </Box>
-      <div style={{ width: '800px', height: '500px', backgroundColor: 'paleturquoise' }}>
-        <WeatherHistoryChart weatherData={weatherData} showWindSpeed={showWindSpeed} />
-      </div>
+      <StyledChartPlaceholder>
+        {renderChart()}
+      </StyledChartPlaceholder>
       <Box sx={{ display: 'flex', justifyContent: 'center', my: '.5rem' }}>
         <FormControlLabel control={
-          <Checkbox checked={showWindSpeed} onChange={handleChangeWindSpeed} size="small" />
+          <Checkbox
+            checked={showWindSpeed}
+            onChange={handleChangeWindSpeed}
+            disabled={queryResult.isFetching}
+            size="small"
+          />
         } label="Show wind speed" />
       </Box>
     </Box>

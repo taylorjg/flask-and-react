@@ -109,16 +109,16 @@ const WeatherHistoryChart: React.FC<WeatherHistoryChartProps> = ({
           <LinePath
             data={weatherData}
             curve={curveBasis}
-            x={d => timeScale(date(d)) ?? 0}
-            y={d => temperatureScale(temperature(d)) ?? 0}
+            x={d => timeScale(date(d))}
+            y={d => temperatureScale(temperature(d))}
             stroke="#f22"
             strokeWidth={1.5}
           />
           <LinePath
             data={weatherData}
             curve={curveBasis}
-            x={d => timeScale(date(d)) ?? 0}
-            y={d => temperatureScale(feelsLike(d)) ?? 0}
+            x={d => timeScale(date(d))}
+            y={d => temperatureScale(feelsLike(d))}
             stroke="#22f"
             strokeWidth={1.5}
             strokeOpacity={0.8}
@@ -129,8 +129,8 @@ const WeatherHistoryChart: React.FC<WeatherHistoryChartProps> = ({
               <LinePath
                 data={weatherData}
                 curve={curveBasis}
-                x={d => timeScale(date(d)) ?? 0}
-                y={d => windSpeedScale(windSpeed(d)) ?? 0}
+                x={d => timeScale(date(d))}
+                y={d => windSpeedScale(windSpeed(d))}
                 stroke="purple"
                 strokeWidth={1.5}
               />
