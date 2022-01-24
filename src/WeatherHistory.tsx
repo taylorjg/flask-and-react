@@ -6,8 +6,8 @@ import WeatherHistoryChart, { HourlyData } from "./WeatherHistoryChart"
 import styled from "@emotion/styled"
 
 const StyledChartPlaceholder = styled.div`
-  width: 800px;
-  height: 500px;
+  width: 100%;
+  aspect-ratio: 16/9;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -69,7 +69,7 @@ const WeatherHistory = () => {
   }
 
   return (
-    <Box>
+    <Box sx={{ width: '100%' }}>
       <Box sx={{ display: 'flex', justifyContent: 'center', my: '.5rem' }}>
         <FormControl size="small" sx={{ minWidth: '10rem' }}>
           <InputLabel id="num-days-label">Number of days</InputLabel>

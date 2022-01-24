@@ -24,7 +24,7 @@ const Content = styled.div`
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <Container>
+      <Container fixed>
         <Content>
           <WeatherHistory />
           <Version />
