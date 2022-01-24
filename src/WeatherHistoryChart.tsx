@@ -5,6 +5,7 @@ import { Threshold } from "@visx/threshold"
 import { scaleTime, scaleLinear } from "@visx/scale"
 import { AxisLeft, AxisRight, AxisBottom } from "@visx/axis"
 import { GridRows, GridColumns } from "@visx/grid"
+import { withParentSize } from "@visx/responsive"
 
 export type HourlyData = {
   dt: number
@@ -13,32 +14,37 @@ export type HourlyData = {
   wind_speed: number
 }
 
-const background = "#f3f3f3"
-
 const date = (d: HourlyData) => d.dt * 1000
 const temperature = (d: HourlyData) => d.temp
 const feelsLike = (d: HourlyData) => d.feels_like
 const windSpeed = (d: HourlyData) => d.wind_speed
 
-const defaultWidth = 600
-const defaultHeight = 400
-const defaultMargin = { top: 40, right: 30, bottom: 50, left: 40 }
+const DEFAULT_MARGIN = {
+  top: 40,
+  right: 30,
+  bottom: 50,
+  left: 40
+}
 
 export type WeatherHistoryChartProps = {
+  debounceTime?: number;
+  enableDebounceLeadingCall?: boolean;
+  parentWidth?: number;
+  parentHeight?: number;
   weatherData: HourlyData[]
   showWindSpeed: boolean
-  width?: number
-  height?: number
-  margin?: { top: number; right: number; bottom: number; left: number }
 }
 
 const WeatherHistoryChart: React.FC<WeatherHistoryChartProps> = ({
+  parentWidth,
+  parentHeight,
   weatherData,
-  showWindSpeed,
-  width = defaultWidth,
-  height = defaultHeight,
-  margin = defaultMargin
+  showWindSpeed
 }) => {
+  const width = parentWidth!
+  const height = parentHeight!
+  const margin = DEFAULT_MARGIN
+
   const timeScale = scaleTime<number>({
     domain: [
       Math.min(...weatherData.map(date)),
@@ -73,7 +79,7 @@ const WeatherHistoryChart: React.FC<WeatherHistoryChartProps> = ({
   return (
     <div>
       <svg width={width} height={height}>
-        <rect x={0} y={0} width={width} height={height} fill={background} rx={10} />
+        <rect x={0} y={0} width={width} height={height} fill="#f3f3f3" rx={10} />
         <Group left={margin.left} top={margin.top}>
           <GridRows scale={temperatureScale} width={xMax} height={yMax} stroke="#e0e0e0" />
           <GridColumns scale={timeScale} width={xMax} height={yMax} stroke="#e0e0e0" />
@@ -136,4 +142,4 @@ const WeatherHistoryChart: React.FC<WeatherHistoryChartProps> = ({
   )
 }
 
-export default WeatherHistoryChart
+export default withParentSize<WeatherHistoryChartProps>(WeatherHistoryChart)

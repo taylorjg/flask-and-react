@@ -54,7 +54,9 @@ const WeatherHistory = () => {
           </Select>
         </FormControl>
       </Box>
-      <WeatherHistoryChart weatherData={weatherData} showWindSpeed={showWindSpeed} />
+      <div style={{ width: '800px', height: '500px', backgroundColor: 'paleturquoise' }}>
+        <WeatherHistoryChart weatherData={weatherData} showWindSpeed={showWindSpeed} />
+      </div>
       <Box sx={{ display: 'flex', justifyContent: 'center', my: '.5rem' }}>
         <FormControlLabel control={
           <Checkbox checked={showWindSpeed} onChange={handleChangeWindSpeed} size="small" />
